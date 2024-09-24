@@ -11,9 +11,11 @@ buildscript {
     ext {
         opensearch_group = "org.opensearch"
 
-        isSnapshot = "true" == System.getProperty("build.snapshot", "true")
+        isSnapshot = "true" == System.getProperty("build.snapshot", "false")
         opensearch_version = System.getProperty("opensearch.version", "2.16.0-SNAPSHOT")
         buildVersionQualifier = System.getProperty("build.version_qualifier", "")
+        wazuh_version = System.getProperty("version", "5.0.0")
+        revision = System.getProperty("build.revision", "0")
         // 2.0.0-rc1-SNAPSHOT -> 2.0.0.0-rc1-SNAPSHOT
         version_tokens = opensearch_version.tokenize('-')
         opensearch_build = version_tokens[0] + '.0'
@@ -80,7 +82,6 @@ publishing {
             pom {
                 name = 'wazuh-indexer-scheduler'
                 description = 'Scheduler for Dashboards Reports Plugin'
-                groupId = "com.wazuh.plugin"
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'
@@ -163,7 +164,7 @@ plugins.withId('org.jetbrains.kotlin.jvm') {
 
 allprojects {
     group = "org.opensearch"
-    version = "${opensearch_build}"
+    version = "${wazuh_version}" + ".${revision}"
     plugins.withId('java') {
         sourceCompatibility = targetCompatibility = "11"
     }
