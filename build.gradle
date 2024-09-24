@@ -67,7 +67,7 @@ def usingMultiNode = project.properties.containsKey('numNodes')
 check.dependsOn jacocoTestReport
 
 opensearchplugin {
-    name 'opensearch-reports-scheduler'
+    name 'wazuh-indexer-reports-scheduler'
     description 'Scheduler for Dashboards Reports Plugin'
     classname "org.opensearch.reportsscheduler.ReportsSchedulerPlugin"
     extendedPlugins = ['opensearch-job-scheduler']
@@ -77,9 +77,9 @@ publishing {
     publications {
         pluginZip(MavenPublication) { publication ->
             pom {
-                name = 'opensearch-reports-scheduler'
+                name = 'wazuh-indexer-scheduler'
                 description = 'Scheduler for Dashboards Reports Plugin'
-                groupId = "org.opensearch.plugin"
+                groupId = "com.wazuh.plugin"
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'
@@ -90,6 +90,10 @@ publishing {
                     developer {
                         name = 'OpenSearch'
                         url = 'https://github.com/opensearch-project/reporting'
+                    }
+                    developer {
+                        name = 'Wazuh'
+                        url = 'https://github.com/wazuh/wazuh-indexer-reporting'
                     }
                 }
             }
