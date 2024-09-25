@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>wazuh-indexer-reports-scheduler-wazuh-indexer-reporting</name>
+	<name>wazuh-indexer-reports-scheduler</name>
 	<comment>Project reports-scheduler created by Buildship.</comment>
 	<projects>
 	</projects>
