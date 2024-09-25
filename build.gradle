@@ -300,19 +300,6 @@ integTest.getClusters().forEach{c -> c.plugin(project.getObjects().fileProperty(
 testClusters.integTest {
     testDistribution = "INTEG_TEST"
     // need to install job-scheduler first, need to assemble job-scheduler first
-//    plugin(provider(new Callable<RegularFile>(){
-//        @Override
-//        RegularFile call() throws Exception {
-//            return new RegularFile() {
-//                @Override
-//                File getAsFile() {
-//                    return configurations.zipArchive.asFileTree.getSingleFile()
-//                }
-//            }
-//        }
-//    }))
-
-
     plugin(provider({
         new RegularFile() {
             @Override
