@@ -208,6 +208,9 @@ repositories {
 }
 
 dependencies {
+    // Needed for integ tests
+    zipArchive group: 'org.opensearch.plugin', name:'opensearch-notifications-core', version: "${opensearch_build}"
+    zipArchive group: 'org.opensearch.plugin', name:'notifications', version: "${opensearch_build}"
     zipArchive group: 'org.opensearch.plugin', name:'opensearch-job-scheduler', version: "${opensearch_build}"
     opensearchPlugin "org.opensearch.plugin:opensearch-security:${opensearch_build}@zip"
     implementation "org.opensearch:opensearch:${opensearch_version}"
@@ -493,14 +496,35 @@ def securityPluginFile = resolvePluginFile("opensearch-security")
 testClusters.integTest {
     testDistribution = "ARCHIVE"
     // need to install job-scheduler first, need to assemble job-scheduler first
-    plugin(provider(new Callable<RegularFile>(){
-        @Override
-        RegularFile call() throws Exception {
-            return new RegularFile() {
-                @Override
-                File getAsFile() {
-                    return configurations.zipArchive.asFileTree.getSingleFile()
-                }
+    plugin(provider({
+        new RegularFile() {
+            @Override
+            File getAsFile() {
+                return configurations.zipArchive.asFileTree.matching {
+                    include '**/opensearch-job-scheduler*'
+                }.singleFile
+            }
+        }
+    }))
+
+    plugin(provider({
+        new RegularFile() {
+            @Override
+            File getAsFile() {
+                return configurations.zipArchive.asFileTree.matching {
+                    include '**/opensearch-notifications-core*'
+                }.singleFile
+            }
+        }
+    }))
+
+    plugin(provider({
+        new RegularFile() {
+            @Override
+            File getAsFile() {
+                return configurations.zipArchive.asFileTree.matching {
+                    include '**/notifications*'
+                }.singleFile
             }
         }
     }))
