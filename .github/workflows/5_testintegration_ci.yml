@@ -1,11 +1,9 @@
-name: Build packages (on push)
+name: CI
 
 # This workflow runs when any of the following occur:
 # - On any changes
 on:
     push:
-        branches:
-        - '*'
 
 jobs:
     call-test-workflow:
