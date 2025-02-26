@@ -5,9 +5,24 @@ name: CI
 on:
     push:
 
+env:
+     wazuh_reporting_ref: ${{ github.ref }}
+
 jobs:
-    call-test-workflow:
-        runs-on: ubuntu-22.04
-        steps:
-            - run: |
-                  ./gradlew check
+  call-test-workflow:
+    runs-on: ubuntu-22.04
+    
+    steps:
+    
+      - uses: actions/checkout@v4
+        with:
+          repository: wazuh/wazuh-indexer-reporting
+          ref: ${{ env.wazuh_reporting_ref }}
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Run Gradle check
+        run: ./gradlew check  
