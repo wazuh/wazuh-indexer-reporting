@@ -1,0 +1,15 @@
+name: Build packages (on push)
+
+# This workflow runs when any of the following occur:
+# - On any changes
+on:
+    push:
+        branches:
+        - '*'
+
+jobs:
+    call-test-workflow:
+        runs-on: ubuntu-22.04
+        steps:
+            - run: |
+                  ./gradlew check

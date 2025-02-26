@@ -2,9 +2,13 @@ run-name: Build Wazuh Indexer Reporting plugin | ${{ inputs.id}}
 name: Build packages
 
 # This workflow runs when any of the following occur:
+# - Any changes
 # - Run manually
 # - Invoked from another workflow
 on:
+  push:
+    paths-ignore:
+      - '**/*.md'
   workflow_dispatch:
     inputs:
       revision:
@@ -56,7 +60,7 @@ jobs:
 
       - name: Get version
         id: version
-        run: echo "version=$(jq -r .version<VERSION.json)" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(<VERSION)" >> "$GITHUB_OUTPUT"
 
       - name: Build with Gradle
         run: ./gradlew build -Dversion=${{ steps.version.outputs.version }} -Drevision=${{ inputs.revision }}
