@@ -6,7 +6,7 @@ name: Build packages (on push)
 on:
     push:
         paths-ignore:
-        - '**/*.md'
+            - "**/*.md"
 
 jobs:
     call-build-workflow:
