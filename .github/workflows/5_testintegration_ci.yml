@@ -6,8 +6,6 @@ name: CI
 on:
     push:
 
-env:
-     wazuh_reporting_ref: ${{ github.ref }}
 
 jobs:
   call-test-workflow:
@@ -18,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: wazuh/wazuh-indexer-reporting
-          ref: ${{ env.wazuh_reporting_ref }}
+          ref: ${{ github.ref }}
 
       - uses: actions/setup-java@v4
         with:

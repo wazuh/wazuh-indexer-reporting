@@ -2,10 +2,8 @@ run-name: Build Wazuh Indexer Reporting plugin | ${{ inputs.id}}
 name: Build packages
 
 # This workflow runs when any of the following occur:
-# - Any changes
 # - Run manually
 # - Invoked from another workflow
-
 on:
   workflow_dispatch:
     inputs:
