@@ -1,4 +1,4 @@
-name: CI
+name: Gradle check
 
 # This workflow runs when any of the following occur:
 # - On any changes
