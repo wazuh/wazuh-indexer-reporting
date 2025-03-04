@@ -2,6 +2,7 @@ name: CI
 
 # This workflow runs when any of the following occur:
 # - On any changes
+
 on:
     push:
 
