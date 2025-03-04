@@ -4,11 +4,11 @@ name: Build packages (on push)
 # - On push
 
 on:
-    push:
-        paths-ignore:
-            - "**/*.md"
+  push:
+    paths-ignore:
+      - "**/*.md"
 
 jobs:
-    call-build-workflow:
-        uses: ./.github/workflows/5_builderpackage_reporting.yml
-        secrets: inherit
+  call-build-workflow:
+    uses: ./.github/workflows/5_builderpackage_reporting.yml
+    secrets: inherit
