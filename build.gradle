@@ -30,7 +30,7 @@ buildscript {
         isSnapshot = "true" == System.getProperty("build.snapshot", "true")
         opensearch_version = System.getProperty("opensearch.version", "3.3.2-SNAPSHOT")
         buildVersionQualifier = System.getProperty("build.version_qualifier", "")
-        wazuh_version = System.getProperty("version", "5.0.0")
+        wazuh_version = System.getProperty("version", "6.0.0")
         revision = System.getProperty("revision", "0")
         // 2.0.0-rc1-SNAPSHOT -> 2.0.0.0-rc1-SNAPSHOT
         version_tokens = opensearch_version.tokenize('-')
