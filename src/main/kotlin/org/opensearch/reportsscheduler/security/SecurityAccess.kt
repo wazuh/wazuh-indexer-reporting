@@ -20,6 +20,7 @@ internal object SecurityAccess {
      * Execute the operation in privileged mode.
      */
     @Throws(Exception::class)
+    @SuppressWarnings("removal")
     fun <T> doPrivileged(operation: PrivilegedExceptionAction<T>?): T {
         SpecialPermission.check()
         return try {
