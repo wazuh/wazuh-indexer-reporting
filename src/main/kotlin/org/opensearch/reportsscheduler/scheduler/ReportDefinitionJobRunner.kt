@@ -10,8 +10,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.opensearch.action.search.SearchRequest
 import org.opensearch.action.search.SearchResponse
-import org.opensearch.client.Client
-import org.opensearch.client.node.NodeClient
 import org.opensearch.cluster.service.ClusterService
 import org.opensearch.commons.notifications.model.NotificationConfigInfo
 import org.opensearch.index.query.QueryBuilders
@@ -27,6 +25,8 @@ import org.opensearch.reportsscheduler.util.buildReportLink
 import org.opensearch.reportsscheduler.util.logger
 import org.opensearch.reportsscheduler.util.sendNotificationWithHTML
 import org.opensearch.search.builder.SearchSourceBuilder
+import org.opensearch.transport.client.Client
+import org.opensearch.transport.client.node.NodeClient
 import java.time.Instant
 
 internal object ReportDefinitionJobRunner : ScheduledJobRunner {
