@@ -8,8 +8,6 @@ package org.opensearch.reportsscheduler.util
 import org.apache.logging.log4j.LogManager
 import org.opensearch.OpenSearchSecurityException
 import org.opensearch.OpenSearchStatusException
-import org.opensearch.client.Client
-import org.opensearch.client.node.NodeClient
 import org.opensearch.commons.notifications.NotificationsPluginInterface
 import org.opensearch.commons.notifications.action.GetNotificationConfigRequest
 import org.opensearch.commons.notifications.action.GetNotificationConfigResponse
@@ -20,6 +18,8 @@ import org.opensearch.commons.notifications.model.NotificationConfigInfo
 import org.opensearch.commons.notifications.model.SeverityType
 import org.opensearch.core.action.ActionListener
 import org.opensearch.core.rest.RestStatus
+import org.opensearch.transport.client.Client
+import org.opensearch.transport.client.node.NodeClient
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
