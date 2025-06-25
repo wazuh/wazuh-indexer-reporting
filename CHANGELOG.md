@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased 6.0.x]
 ### Added
 - New quality check workflows [(#30)](https://github.com/wazuh/wazuh-indexer-reporting/pull/30)
-- Add version bumper script from wazuh-indexer [(#43)](https://github.com/wazuh/wazuh-indexer-plugins/pull/43) 
+- Add repository bumper [(#43)](https://github.com/wazuh/wazuh-indexer-plugins/pull/43) 
 ### Dependencies
 
 ### Changed
