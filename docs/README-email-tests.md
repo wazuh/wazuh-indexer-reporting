@@ -8,7 +8,7 @@ This guide walks you through setting up and testing Wazuh Indexer's email notifi
 
 Ensure the following environment:
 
-- **Wazuh Indexer** running at `http://127.0.0.1:9200` (Note: uses **HTTP**, not HTTPS).
+- **Wazuh Indexer** running at `https://127.0.0.1:9200`.
 - **Notifications plugin** installed and enabled.
 - **Mailpit** running locally with:
   - SMTP on port `1025`
@@ -45,7 +45,7 @@ This sets up Mailpit with persistent storage and authentication disabled, making
 Create an SMTP account pointing to Mailpit:
 
 ```bash
-curl -X POST "http://127.0.0.1:9200/_plugins/_notifications/configs/" \
+curl -sku admin:admin -X POST "https://127.0.0.1:9200/_plugins/_notifications/configs/" \
   -H 'Content-Type: application/json' -d '
 {
   "config_id": "mailpit-id",
@@ -71,7 +71,7 @@ curl -X POST "http://127.0.0.1:9200/_plugins/_notifications/configs/" \
 Set up an email channel that uses the SMTP account above:
 
 ```bash
-curl -X POST "http://127.0.0.1:9200/_plugins/_notifications/configs/" \
+curl -sku admin:admin -X POST "https://127.0.0.1:9200/_plugins/_notifications/configs/" \
   -H 'Content-Type: application/json' -d '
 {
   "config_id": "email-channel-id",
@@ -98,7 +98,7 @@ curl -X POST "http://127.0.0.1:9200/_plugins/_notifications/configs/" \
 Trigger a test email through the configured channel:
 
 ```bash
-curl -X GET "http://127.0.0.1:9200/_plugins/_notifications/feature/test/email-channel-id?pretty"
+curl -sku admin:admin -X GET "https://127.0.0.1:9200/_plugins/_notifications/feature/test/email-channel-id?pretty"
 ```
 
 ---
@@ -120,6 +120,5 @@ You should see the test email message appear in the inbox.
 - **Logs**: Inspect Wazuh Indexer logs for relevant errors.
 - **Networking**:
   - Confirm Docker and system firewalls allow access to ports 1025 and 8025.
-- **HTTPS Note**: If using self-signed certificates with HTTPS endpoints, add `-k` to `curl` to ignore certificate validation.
 
 ---
