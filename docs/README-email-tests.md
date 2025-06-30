@@ -6,15 +6,18 @@ This guide walks you through setting up and testing Wazuh Indexer's email notifi
 
 ## Prerequisites
 
-Ensure the following environment:
+Before you begin, setup the following environment variables in your shell:
 
-- **Wazuh Indexer** running at `https://127.0.0.1:9200`.
-- **Notifications plugin** installed and enabled.
-- **Mailpit** running locally with:
-  - SMTP on port `1025`
-  - Web UI on port `8025`
+```shellsession
+PROTO="http"
+INDEXER_HOST="127.0.0.1"
+INDEXER_PORT="9200"
+MAILPIT_HOST="127.0.0.1"
+```
 
->  Adjust the host and ports in the examples below if your setup differs.
+> The values above are meant for testing when running `./gradlew run` from this repo's top directory.
+> Adjust them as necessary for your environment.
+
 
 ---
 
@@ -45,7 +48,7 @@ This sets up Mailpit with persistent storage and authentication disabled, making
 Create an SMTP account pointing to Mailpit:
 
 ```bash
-curl -sku admin:admin -X POST "https://127.0.0.1:9200/_plugins/_notifications/configs/" \
+curl -sku admin:admin -X POST "${PROTO}://${INDEXER_IP}:${INDEXER_PORT}/_plugins/_notifications/configs/" \
   -H 'Content-Type: application/json' -d '
 {
   "config_id": "mailpit-id",
@@ -55,7 +58,7 @@ curl -sku admin:admin -X POST "https://127.0.0.1:9200/_plugins/_notifications/co
     "config_type": "smtp_account",
     "is_enabled": true,
     "smtp_account": {
-      "host": "127.0.0.1",
+      "host": "'${MAILPIT_HOST}'",
       "port": 1025,
       "method": "none",
       "from_address": "wazuh@example.com"
@@ -71,7 +74,7 @@ curl -sku admin:admin -X POST "https://127.0.0.1:9200/_plugins/_notifications/co
 Set up an email channel that uses the SMTP account above:
 
 ```bash
-curl -sku admin:admin -X POST "https://127.0.0.1:9200/_plugins/_notifications/configs/" \
+curl -sku admin:admin -X POST "${PROTO}://${INDEXER_IP}:${INDEXER_PORT}/_plugins/_notifications/configs/" \
   -H 'Content-Type: application/json' -d '
 {
   "config_id": "email-channel-id",
@@ -98,7 +101,7 @@ curl -sku admin:admin -X POST "https://127.0.0.1:9200/_plugins/_notifications/co
 Trigger a test email through the configured channel:
 
 ```bash
-curl -sku admin:admin -X GET "https://127.0.0.1:9200/_plugins/_notifications/feature/test/email-channel-id?pretty"
+curl -sku admin:admin -X GET "${PROTO}://${INDEXER_IP}:${INDEXER_PORT}/_plugins/_notifications/feature/test/email-channel-id?pretty"
 ```
 
 ---
@@ -108,7 +111,7 @@ curl -sku admin:admin -X GET "https://127.0.0.1:9200/_plugins/_notifications/fea
 Open the Mailpit web UI in your browser:
 
 ```
-http://localhost:8025
+http://127.0.0.1:8025
 ```
 
 You should see the test email message appear in the inbox.
