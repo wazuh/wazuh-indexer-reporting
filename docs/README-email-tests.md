@@ -2,11 +2,9 @@
 
 This guide walks you through setting up and testing Wazuh Indexer's email notification system using [Mailpit](https://github.com/axllent/mailpit) as a local SMTP server.
 
----
-
 ## Prerequisites
 
-Before you begin, setup the following environment variables in your shell:
+Before you begin, set up the following environment variables in your shell:
 
 ```shellsession
 PROTO="http"
@@ -15,11 +13,8 @@ INDEXER_PORT="9200"
 MAILPIT_HOST="127.0.0.1"
 ```
 
-> The values above are meant for testing when running `./gradlew run` from this repo's top directory.
+> The values above are meant for testing when running `./gradlew run` from the root folder of this repository.
 > Adjust them as necessary for your environment.
-
-
----
 
 ## 1. Start Mailpit (Docker)
 
@@ -40,8 +35,6 @@ docker run -d \
 ```
 
 This sets up Mailpit with persistent storage and authentication disabled, making it suitable for local testing.
-
----
 
 ## 2. Configure SMTP Account in Wazuh Indexer
 
@@ -66,8 +59,6 @@ curl -sku admin:admin -X POST "${PROTO}://${INDEXER_IP}:${INDEXER_PORT}/_plugins
   }
 }'
 ```
-
----
 
 ## 3. Create an Email Notification Channel
 
@@ -94,8 +85,6 @@ curl -sku admin:admin -X POST "${PROTO}://${INDEXER_IP}:${INDEXER_PORT}/_plugins
 }'
 ```
 
----
-
 ## 4. Send a Test Notification
 
 Trigger a test email through the configured channel:
@@ -104,15 +93,9 @@ Trigger a test email through the configured channel:
 curl -sku admin:admin -X GET "${PROTO}://${INDEXER_IP}:${INDEXER_PORT}/_plugins/_notifications/feature/test/email-channel-id?pretty"
 ```
 
----
-
 ## 5. View Email in Mailpit
 
-Open the Mailpit web UI in your browser:
-
-```
-http://127.0.0.1:8025
-```
+Open the Mailpit web UI in your browser at http://127.0.0.1:8025.
 
 You should see the test email message appear in the inbox.
 
@@ -123,5 +106,3 @@ You should see the test email message appear in the inbox.
 - **Logs**: Inspect Wazuh Indexer logs for relevant errors.
 - **Networking**:
   - Confirm Docker and system firewalls allow access to ports 1025 and 8025.
-
----
