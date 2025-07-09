@@ -8,7 +8,7 @@ Before you begin, set up the following environment variables in your shell:
 
 ```shellsession
 PROTO="http"
-INDEXER_HOST="127.0.0.1"
+INDEXER_IP="127.0.0.1"
 INDEXER_PORT="9200"
 MAILPIT_HOST="127.0.0.1"
 ```
