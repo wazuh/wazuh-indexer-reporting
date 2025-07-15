@@ -68,12 +68,12 @@ private suspend fun createNotification(
     client: Client
 ) {
     val log by logger(OnDemandReportCreateAction::class.java)
-    val title: String = reportDefinitionDetails?.reportDefinition?.delivery!!.title
-    val textMessage: String = reportDefinitionDetails.reportDefinition.delivery.textDescription
-    val htmlMessage: String? = reportDefinitionDetails.reportDefinition.delivery.htmlDescription
+    val title: String = reportDefinitionDetails?.reportDefinition?.delivery?.title ?: "title"
+    val textMessage: String = reportDefinitionDetails?.reportDefinition?.delivery?.textDescription ?: "message"
+    val htmlMessage: String? = reportDefinitionDetails?.reportDefinition?.delivery?.htmlDescription ?: "html message"
 
     val urlDefinition: String =
-        buildReportLink(reportDefinitionDetails.reportDefinition.source.origin, reportDefinitionDetails.tenant, id)
+        buildReportLink(reportDefinitionDetails?.reportDefinition?.source?.origin ?: "origin", reportDefinitionDetails?.tenant ?: "tenant", id)
 
     val textWithURL: String =
         textMessage.replace("{{urlDefinition}}", urlDefinition)
