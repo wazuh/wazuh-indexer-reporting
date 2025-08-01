@@ -57,7 +57,7 @@ internal object ReportInstancesIndex {
      * @param clusterService The ES cluster service
      */
     fun initialize(client: Client, clusterService: ClusterService) {
-        // While OpenSearch uses an instance of SecureIndexClient for index operations, we need
+        // While OpenSearch uses an instance of SecureIndexClient for indexing operations, we need
         // an instance of NodeClient for the delivery of notifications upon report instance creation.
         this.nodeClient = client as NodeClient
         this.client = SecureIndexClient(client)
