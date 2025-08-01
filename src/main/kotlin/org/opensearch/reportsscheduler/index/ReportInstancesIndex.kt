@@ -5,6 +5,9 @@
 
 package org.opensearch.reportsscheduler.index
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.opensearch.ResourceAlreadyExistsException
 import org.opensearch.action.DocWriteResponse
 import org.opensearch.action.admin.indices.create.CreateIndexRequest
@@ -27,10 +30,12 @@ import org.opensearch.reportsscheduler.model.RestTag.ACCESS_LIST_FIELD
 import org.opensearch.reportsscheduler.model.RestTag.TENANT_FIELD
 import org.opensearch.reportsscheduler.model.RestTag.UPDATED_TIME_FIELD
 import org.opensearch.reportsscheduler.settings.PluginSettings
+import org.opensearch.reportsscheduler.util.NotificationApiUtils
 import org.opensearch.reportsscheduler.util.SecureIndexClient
 import org.opensearch.reportsscheduler.util.logger
 import org.opensearch.search.builder.SearchSourceBuilder
 import org.opensearch.transport.client.Client
+import org.opensearch.transport.client.node.NodeClient
 import java.util.concurrent.TimeUnit
 
 /**
@@ -43,6 +48,7 @@ internal object ReportInstancesIndex {
     private const val REPORT_INSTANCES_SETTINGS_FILE_NAME = "report-instances-settings.yml"
 
     private lateinit var client: Client
+    private lateinit var nodeClient: NodeClient
     private lateinit var clusterService: ClusterService
 
     /**
@@ -51,6 +57,9 @@ internal object ReportInstancesIndex {
      * @param clusterService The ES cluster service
      */
     fun initialize(client: Client, clusterService: ClusterService) {
+        // While OpenSearch uses an instance of SecureIndexClient for index operations, we need
+        // an instance of NodeClient for the delivery of notifications upon report instance creation.
+        this.nodeClient = client as NodeClient
         this.client = SecureIndexClient(client)
         this.clusterService = clusterService
     }
@@ -111,6 +120,14 @@ internal object ReportInstancesIndex {
             log.warn("$LOG_PREFIX:createReportInstance - response:$response")
             null
         } else {
+            // -- Notify on report instance creation --
+            when (reportInstance.reportDefinitionDetails) {
+                null -> log.error("Report definition for ${reportInstance.id} is null")
+                else -> CoroutineScope(Dispatchers.IO).launch {
+                    NotificationApiUtils.onReportInstanceCreated(nodeClient, reportInstance.reportDefinitionDetails, response.id)
+                }
+            }
+
             response.id
         }
     }
