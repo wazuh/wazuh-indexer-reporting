@@ -8,11 +8,8 @@ package org.opensearch.reportsscheduler.scheduler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.opensearch.action.search.SearchRequest
-import org.opensearch.action.search.SearchResponse
 import org.opensearch.cluster.service.ClusterService
 import org.opensearch.commons.notifications.model.NotificationConfigInfo
-import org.opensearch.index.query.QueryBuilders
 import org.opensearch.jobscheduler.spi.JobExecutionContext
 import org.opensearch.jobscheduler.spi.ScheduledJobParameter
 import org.opensearch.jobscheduler.spi.ScheduledJobRunner
@@ -24,7 +21,6 @@ import org.opensearch.reportsscheduler.util.NotificationApiUtils.getNotification
 import org.opensearch.reportsscheduler.util.buildReportLink
 import org.opensearch.reportsscheduler.util.logger
 import org.opensearch.reportsscheduler.util.sendNotificationWithHTML
-import org.opensearch.search.builder.SearchSourceBuilder
 import org.opensearch.transport.client.Client
 import org.opensearch.transport.client.node.NodeClient
 import java.time.Instant
@@ -49,27 +45,24 @@ internal object ReportDefinitionJobRunner : ScheduledJobRunner {
     private suspend fun createNotification(
         configInfo: NotificationConfigInfo,
         reportDefinitionDetails: ReportDefinitionDetails,
-        id: String,
-        hits: Long?
+        id: String
     ) {
         val title: String = reportDefinitionDetails.reportDefinition.delivery!!.title
         val textMessage: String = reportDefinitionDetails.reportDefinition.delivery.textDescription
         val htmlMessage: String? = reportDefinitionDetails.reportDefinition.delivery.htmlDescription
 
-        val urlDefinition: String =
+        val reportLink: String =
             buildReportLink(reportDefinitionDetails.reportDefinition.source.origin, reportDefinitionDetails.tenant, id)
 
-        val textWithURL: String =
-            textMessage.replace("{{urlDefinition}}", urlDefinition).replace("{{hits}}", hits.toString())
-        val htmlWithURL: String? =
-            htmlMessage?.replace("{{urlDefinition}}", urlDefinition)?.replace("{{hits}}", hits.toString())
+        // NOTE {{reportLink}} in the message is replaced by the actual link to the report.
+        val body: String = textMessage.replace("{{reportLink}}", reportLink)
+        val htmlBody: String? = htmlMessage?.replace("{{reportLink}}", reportLink)
 
-        log.debug("HTML message: $htmlMessage") // TODO remove
         configInfo.sendNotificationWithHTML(
             this.client,
             title,
-            textWithURL,
-            htmlWithURL
+            body,
+            htmlBody
         )
     }
 
@@ -100,39 +93,23 @@ internal object ReportDefinitionJobRunner : ScheduledJobRunner {
             } else {
                 log.info("$LOG_PREFIX:runJob-created job:$id")
 
-                // Wazuh - Make queries
-                val builderSearchResponse: SearchSourceBuilder = SearchSourceBuilder()
-                    .query(
-                        QueryBuilders.boolQuery()
-                            .must(
-                                QueryBuilders.rangeQuery("timestamp")
-                                    .gt(beginTime)
-                                    .lte(currentTime)
-                            )
-                            .must(
-                                QueryBuilders.matchQuery("agent.id", "001")
-                            )
+                // -- Email delivery to every notification channel added to the report definition --
+                for (notificationChannelId in reportDefinitionDetails.reportDefinition.delivery!!.configIds) {
+                    val notificationChannel: NotificationConfigInfo? = getNotificationConfigInfo(
+                        client as NodeClient,
+                        notificationChannelId
                     )
-                val jobSearchRequest: SearchRequest =
-                    SearchRequest().indices("wazuh-alerts-*").source(builderSearchResponse)
-                val response: SearchResponse = client.search(jobSearchRequest).actionGet()
 
-                val reportDefinitionId = reportDefinitionDetails.reportDefinition.delivery!!.configIds[0]
-                val configInfo: NotificationConfigInfo? = getNotificationConfigInfo(
-                    client as NodeClient,
-                    reportDefinitionId
-                )
-
-                if (configInfo != null) {
-                    createNotification(
-                        configInfo,
-                        reportDefinitionDetails,
-                        id,
-                        response.hits.totalHits?.value
-                    )
-                    log.info("Notification with id $id was sent.")
-                } else {
-                    log.error("NotificationConfigInfo with id $reportDefinitionId was not found.")
+                    if (notificationChannel != null) {
+                        createNotification(
+                            notificationChannel,
+                            reportDefinitionDetails,
+                            id
+                        )
+                        log.info("Notification with id $id was sent.")
+                    } else {
+                        log.error("NotificationConfigInfo with id $notificationChannelId was not found.")
+                    }
                 }
             }
         }
