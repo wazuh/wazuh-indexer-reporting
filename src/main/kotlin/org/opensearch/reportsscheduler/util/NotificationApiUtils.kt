@@ -18,20 +18,21 @@ import org.opensearch.commons.notifications.model.NotificationConfigInfo
 import org.opensearch.commons.notifications.model.SeverityType
 import org.opensearch.core.action.ActionListener
 import org.opensearch.core.rest.RestStatus
+import org.opensearch.reportsscheduler.model.ReportDefinitionDetails
 import org.opensearch.transport.client.Client
 import org.opensearch.transport.client.node.NodeClient
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-object NotificationApiUtils {
+internal object NotificationApiUtils {
 
-    private val logger = LogManager.getLogger(NotificationApiUtils::class)
+    private val log = LogManager.getLogger(NotificationApiUtils::class)
 
     /**
      * Gets a NotificationConfigInfo object by ID if it exists.
      */
-    suspend fun getNotificationConfigInfo(client: NodeClient, id: String): NotificationConfigInfo? {
+    private suspend fun getNotificationConfigInfo(client: NodeClient, id: String): NotificationConfigInfo? {
         return try {
             val res: GetNotificationConfigResponse =
                 getNotificationConfig(client, GetNotificationConfigRequest(setOf(id)))
@@ -40,7 +41,7 @@ object NotificationApiUtils {
             throw e
         } catch (e: OpenSearchStatusException) {
             if (e.status() == RestStatus.NOT_FOUND) {
-                logger.debug("Notification config [$id] was not found")
+                log.debug("Notification config [$id] was not found")
             }
             null
         }
@@ -59,6 +60,92 @@ object NotificationApiUtils {
                 )
             }
         return getNotificationConfigResponse
+    }
+
+    /**
+     * Creates and sends a notification message to a specific notification channel.
+     *
+     * This function generates a notification message based on the report definition details,
+     * replacing placeholders in the message templates with actual report links and sends
+     * the notification through the specified notification channel.
+     *
+     * @param client The NodeClient used to interact with OpenSearch services
+     * @param configInfo The notification configuration containing channel details and settings
+     * @param reportDefinitionDetails The report definition containing delivery configuration,
+     *                               title, text description, and HTML description
+     * @param id The unique identifier of the report instance used to build the report link
+     *
+     * @throws OpenSearchSecurityException If there are security-related issues during notification sending
+     * @throws OpenSearchStatusException If the notification service returns an error status
+     */
+    private suspend fun createNotification(
+        client: NodeClient,
+        configInfo: NotificationConfigInfo,
+        reportDefinitionDetails: ReportDefinitionDetails,
+        id: String
+    ) {
+        val title: String = reportDefinitionDetails.reportDefinition.delivery!!.title
+        val textMessage: String = reportDefinitionDetails.reportDefinition.delivery.textDescription
+        val htmlMessage: String? = reportDefinitionDetails.reportDefinition.delivery.htmlDescription
+
+        val reportLink: String =
+            buildReportLink(reportDefinitionDetails.reportDefinition.source.origin, reportDefinitionDetails.tenant, id)
+
+        // NOTE {{reportLink}} in the message is replaced by the actual link to the report.
+        val body: String = textMessage.replace("{{reportLink}}", reportLink)
+        val htmlBody: String? = htmlMessage?.replace("{{reportLink}}", reportLink)
+
+        configInfo.sendNotificationWithHTML(
+            client,
+            title,
+            body,
+            htmlBody
+        )
+    }
+
+    /**
+     * Handles the event when a report instance is created by sending notifications to all configured channels.
+     *
+     * This function is called when a new report instance has been successfully created. It iterates through
+     * all notification channels configured in the report definition's delivery settings and sends a
+     * notification message to each valid channel. The notification includes the report details and a
+     * direct link to access the generated report.
+     *
+     * @param client The NodeClient used to interact with OpenSearch services and send notifications
+     * @param reportDefinitionDetails The complete report definition containing delivery configuration,
+     *                               notification channel IDs, message templates, and report metadata
+     * @param id The unique identifier of the newly created report instance, used to generate
+     *           the report access link and track the notification
+     *
+     * @throws OpenSearchSecurityException If there are security permissions issues accessing notification configs
+     * @throws OpenSearchStatusException If there are errors retrieving notification configurations or sending notifications
+     *
+     * @see createNotification
+     * @see getNotificationConfigInfo
+     */
+    suspend fun onReportInstanceCreated(
+        client: NodeClient,
+        reportDefinitionDetails: ReportDefinitionDetails,
+        id: String
+    ) {
+        for (notificationChannelId in reportDefinitionDetails.reportDefinition.delivery!!.configIds) {
+            val notificationChannel: NotificationConfigInfo? = getNotificationConfigInfo(
+                client,
+                notificationChannelId
+            )
+
+            if (notificationChannel != null) {
+                createNotification(
+                    client,
+                    notificationChannel,
+                    reportDefinitionDetails,
+                    id
+                )
+                log.info("Notification with id $id was sent.")
+            } else {
+                log.error("NotificationConfigInfo with id $notificationChannelId was not found.")
+            }
+        }
     }
 }
 
