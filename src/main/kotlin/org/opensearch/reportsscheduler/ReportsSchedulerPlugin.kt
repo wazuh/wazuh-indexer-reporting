@@ -108,7 +108,6 @@ class ReportsSchedulerPlugin : Plugin(), ActionPlugin, SystemIndexPlugin, JobSch
         repositoriesServiceSupplier: Supplier<RepositoriesService>
     ): Collection<Any> {
         PluginSettings.addSettingsUpdateConsumer(clusterService)
-        ReportDefinitionJobRunner.initialize(client, clusterService)
         ReportDefinitionsIndex.initialize(client, clusterService)
         ReportInstancesIndex.initialize(client, clusterService)
         val pluginClientInstance = PluginClient(client)

@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Add scripts to check the opensearch and product version [(#59)](https://github.com/wazuh/wazuh-indexer-reporting/pull/59)
 - Add documentation to bring up an SMTP server for development [(#60)](https://github.com/wazuh/wazuh-indexer-plugins/pull/60) 
 - Add support for multiple notification channels [(#66)](https://github.com/wazuh/wazuh-indexer-reporting/pull/66)
+- Implement delivery of notifications on reports creation [(#67)](https://github.com/wazuh/wazuh-indexer-reporting/pull/67)
 
 ### Dependencies
 
