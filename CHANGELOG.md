@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Dependencies
 
 ### Changed
+- Replace third-party Action to check commiter's email with our forked version [(#71)](https://github.com/wazuh/wazuh-indexer-reporting/pull/71)
 
 ### Deprecated
 
