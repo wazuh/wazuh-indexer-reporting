@@ -1,4 +1,4 @@
-name: Test reporting on Secure Cluster
+name: (5.x) Test reporting on Secure Cluster
 on:
   schedule:
     - cron: '0 0 * * *'  # every night
