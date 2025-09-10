@@ -1,10 +1,17 @@
-name: Gradle check
+name: (5.x) Run tests
 
 # This workflow runs when any of the following occur:
 # - On any changes
 
 on:
   push:
+    paths:
+      - "src/**" # Match changes in source files.
+      - "*.gradle" # Match changes in Gradle configuration.
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   call-test-workflow:
