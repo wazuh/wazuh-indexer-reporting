@@ -11,7 +11,7 @@ The ability to generate reports from dashboards and views on OpenSearch Dashboar
 This plugin will introduce the ability to generate reports, as well as enable the user to customize them, receive them on a schedule or monitor, and have the reports received on external channels such as email, Slack and Chime. 
 
 - https://discuss.opendistrocommunity.dev/t/reporting-module/153
-- https://github.com/opendistro-for-elasticsearch/community/issues/16
+- https://github.com/opendistro-for-elasticsearch/sample-code/issues/16
 
 ### 1.2 Introduction
 

@@ -23,7 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Removed
 
 ### Fixed
-
+- Fix broken links [(#77)](https://github.com/wazuh/wazuh-indexer-reporting/pull/77)
 ### Security
 
 [Unreleased 5.0.x]: https://github.com/wazuh/wazuh-indexer/compare/main...main
