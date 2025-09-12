@@ -1,11 +1,14 @@
-name: Link Checker
+name: (5.x) Check links
 on:
   schedule:
     - cron: "00 8 * * 5"
-
+  workflow_dispatch:
+  
 jobs:
   linkchecker:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
 
     steps:
       - uses: actions/checkout@v4

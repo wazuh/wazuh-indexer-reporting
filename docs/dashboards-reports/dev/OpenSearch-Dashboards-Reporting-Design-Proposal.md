@@ -439,7 +439,7 @@ Scheduled Report Creation workflow
 
 ### 4.4 Alerting Integration
 
-https://opensearch.org/docs/monitoring-plugins/alerting/index/
+https://docs.opensearch.org/docs/observing-your-data/alerting/index/
 
 ODFE Alerting can be used as an external trigger. To generate the report the `generateReport()` API can be utilized as `custom_webhook` destination.
 
@@ -486,7 +486,7 @@ TODO
 
 ### (II) Security reference
 
-* https://opensearch.org/docs/security-plugin/configuration/index/
-* https://opensearch.org/docs/security-plugin/access-control/index/
-* https://opensearch.org/docs/security-plugin/access-control/api/
+* https://docs.opensearch.org/docs/security/configuration/index/
+* https://opensearch.org/docs/docs/security-plugin/access-control/index/
+* https://opensearch.org/docs/docs/security-plugin/access-control/api/
 
