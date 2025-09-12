@@ -35,7 +35,7 @@ Wazuh Indexer Reporting allows ‘Report Owner’ (engineers, including but not 
 
 ## Documentation & Forum
 
-Please see the technical [documentation](https://opensearch.org/docs/dashboards/reporting) to learn more about its features. For additional help with the plugin, including questions about opening an issue, try the Wazuh [Community](https://wazuh.com/community/).
+Please see the technical [documentation](https://docs.opensearch.org/docs/reporting/report-dashboard-index/) to learn more about its features. For additional help with the plugin, including questions about opening an issue, try the Wazuh [Community](https://wazuh.com/community/).
 
 ## Contributing
 
@@ -59,7 +59,7 @@ before publishing it.
 
 ## License
 
-This project is licensed under the [AGPL v3.0 License](LICENSE.txt).
+This project is licensed under the [AGPL v3.0 License](LICENSE).
 
 ## Copyright
 
