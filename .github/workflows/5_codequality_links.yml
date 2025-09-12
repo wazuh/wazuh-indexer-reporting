@@ -1,11 +1,14 @@
-name: Link Checker
+name: (5.x) Check links
 on:
   schedule:
     - cron: "00 8 * * 5"
-
+  workflow_dispatch:
+  
 jobs:
   linkchecker:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -13,7 +16,7 @@ jobs:
         id: lychee
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --accept=200,403,429  "./**/*.md" "./**/*.txt" --exclude-all-private --insecure
+          args: --accept=200,403,429  "./**/*.md" "./**/*.txt" --exclude-all-private --insecure --exclude-path ".github/ISSUE_TEMPLATE/compatibility_request.md"
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: Fail if there were link errors
