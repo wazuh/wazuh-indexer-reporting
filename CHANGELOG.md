@@ -24,6 +24,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 - Fix broken links [(#77)](https://github.com/wazuh/wazuh-indexer-reporting/pull/77)
+- Fix CodeQL workflow [(#76)](https://github.com/wazuh/wazuh-indexer-reporting/pull/76)
+
 ### Security
 
 [Unreleased 5.0.x]: https://github.com/wazuh/wazuh-indexer/compare/main...main
