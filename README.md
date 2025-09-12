@@ -59,7 +59,7 @@ before publishing it.
 
 ## License
 
-This project is licensed under the [AGPL v3.0 License](LICENSE.txt).
+This project is licensed under the [AGPL v3.0 License](LICENSE).
 
 ## Copyright
 
