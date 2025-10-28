@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Replace third-party Action to check commiter's email with our forked version [(#71)](https://github.com/wazuh/wazuh-indexer-reporting/pull/71)
 - Add version to the GH Workflow names [(#73)](https://github.com/wazuh/wazuh-indexer-plugins/pull/73)
 - Update GitHub Actions versions in main branch [(#78)](https://github.com/wazuh/wazuh-indexer-reporting/pull/78)
+- Check GitHub actions with dependabot [(#86)](https://github.com/wazuh/wazuh-indexer-plugins/pull/86)
 
 ### Deprecated
 
