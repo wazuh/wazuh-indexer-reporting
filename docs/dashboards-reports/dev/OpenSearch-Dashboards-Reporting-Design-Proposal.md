@@ -11,7 +11,7 @@ The ability to generate reports from dashboards and views on OpenSearch Dashboar
 This plugin will introduce the ability to generate reports, as well as enable the user to customize them, receive them on a schedule or monitor, and have the reports received on external channels such as email, Slack and Chime. 
 
 - https://discuss.opendistrocommunity.dev/t/reporting-module/153
-- https://github.com/opendistro-for-elasticsearch/community/issues/16
+- https://github.com/opendistro-for-elasticsearch/sample-code/issues/16
 
 ### 1.2 Introduction
 
@@ -439,7 +439,7 @@ Scheduled Report Creation workflow
 
 ### 4.4 Alerting Integration
 
-https://opensearch.org/docs/monitoring-plugins/alerting/index/
+https://docs.opensearch.org/docs/observing-your-data/alerting/index/
 
 ODFE Alerting can be used as an external trigger. To generate the report the `generateReport()` API can be utilized as `custom_webhook` destination.
 
@@ -486,7 +486,7 @@ TODO
 
 ### (II) Security reference
 
-* https://opensearch.org/docs/security-plugin/configuration/index/
-* https://opensearch.org/docs/security-plugin/access-control/index/
-* https://opensearch.org/docs/security-plugin/access-control/api/
+* https://docs.opensearch.org/docs/security/configuration/index/
+* https://opensearch.org/docs/docs/security-plugin/access-control/index/
+* https://opensearch.org/docs/docs/security-plugin/access-control/api/
 
