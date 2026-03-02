@@ -9,10 +9,10 @@ apply plugin: 'com.netflix.nebula.ospackage'
 afterEvaluate {
     ospackage {
         packageName = "${name}"
-        version = "${project.version}" 
+        version = "${project.version}"
 
         into '/usr/share/wazuh-indexer/plugins'
-        from(zipTree(bundlePlugin.archivePath)) {
+        from(zipTree(bundlePlugin.archiveFile.get().asFile)) {
             into opensearchplugin.name
         }
 

@@ -32,8 +32,8 @@ import org.opensearch.reportsscheduler.model.RestTag.UPDATED_TIME_FIELD
 import org.opensearch.reportsscheduler.resources.Utils
 import org.opensearch.reportsscheduler.resources.Utils.shouldUseResourceAuthz
 import org.opensearch.reportsscheduler.settings.PluginSettings
-import org.opensearch.reportsscheduler.util.PluginClient
 import org.opensearch.reportsscheduler.util.NotificationApiUtils
+import org.opensearch.reportsscheduler.util.PluginClient
 import org.opensearch.reportsscheduler.util.SecureIndexClient
 import org.opensearch.reportsscheduler.util.logger
 import org.opensearch.search.builder.SearchSourceBuilder
