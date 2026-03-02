@@ -160,6 +160,7 @@ $RECYCLE.BIN/
 .idea/*.iml
 .idea/*.xml
 .idea/modules
+.idea/*.xml
 *.iml
 *.ipr
 
