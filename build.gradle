@@ -36,7 +36,7 @@ buildscript {
         version_tokens = opensearch_version.tokenize('-')
         opensearch_build = version_tokens[0] + '.0'
 
-        common_utils_version = System.getProperty("common_utils.version", opensearch_build)
+        common_utils_version = System.getProperty("common_utils.version", "${wazuh_version}.${revision}")
         job_scheduler_version = System.getProperty("job_scheduler.version", opensearch_build)
         kotlin_version = System.getProperty("kotlin.version", "2.2.0")
     }
