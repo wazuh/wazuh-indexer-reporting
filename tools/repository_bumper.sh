@@ -8,6 +8,7 @@
 # It takes three arguments:
 # 1. The new version to set (e.g., 4.5.0)
 # 2. The new stage to set (alpha, beta, rc, stable)
+# 3. --set-as-main (optional): bump version values only, keep branch references pointing to main
 #
 
 set -euo pipefail
@@ -16,9 +17,10 @@ set -euo pipefail
 # Print usage instructions
 # ====
 function usage() {
-    echo "Usage: $0 <version> <stage>"
-    echo "  version:  The new version to set in VERSION.json (e.g., 4.5.0)"
-    echo "  stage:    The new stage to set in VERSION.json (alpha, beta, rc, stable)"
+    echo "Usage: $0 <version> <stage> [--set-as-main]"
+    echo "  version:       The new version to set in VERSION.json (e.g., 4.5.0)"
+    echo "  stage:         The new stage to set in VERSION.json (alpha, beta, rc, stable)"
+    echo "  --set-as-main  Enable main branch mode: bump version values only, keep branch references pointing to main"
     exit 1
 }
 
@@ -130,13 +132,31 @@ function update_version_file() {
 # Main logic
 # ====
 function main() {
-    if [ "$#" -ne 2 ]; then
-        log "Error: Invalid number of arguments. Expected 2, got $#."
+    if [[ $# -lt 2 ]]; then
+        log "Error: Invalid number of arguments. Expected at least 2, got $#."
+        usage
+    fi
+    if [[ $# -gt 3 ]]; then
+        log "Error: Too many arguments. Expected at most 3, got $#."
         usage
     fi
 
     local version="$1"
     local stage="$2"
+    local set_as_main=""
+    shift 2
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --set-as-main)
+                set_as_main="yes"
+                shift 1
+                ;;
+            *)
+                log "Error: Unknown argument '$1'."
+                usage
+                ;;
+        esac
+    done
 
     init_logging
     log "Starting update for VERSION.json with version=$version, stage=$stage"
@@ -145,7 +165,6 @@ function main() {
     check_jq_installed
     validate_inputs "$version" "$stage"
     update_version_file "$version" "$stage"
-
     log "Update complete."
 }
 
