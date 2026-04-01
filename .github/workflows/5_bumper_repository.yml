@@ -104,6 +104,7 @@ jobs:
 
       - name: Make version bump changes
         run: |
+          echo "Running bump script"
           set_as_main=${{ inputs.set_as_main }}
           script_params=("${{ steps.vars.outputs.version }}" "${{ steps.vars.outputs.stage }}")
           if [[ "$set_as_main" == "true" ]]; then
