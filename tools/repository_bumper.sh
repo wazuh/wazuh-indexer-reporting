@@ -165,7 +165,6 @@ function main() {
     check_jq_installed
     validate_inputs "$version" "$stage"
     update_version_file "$version" "$stage"
-    
     log "Update complete."
 }
 
