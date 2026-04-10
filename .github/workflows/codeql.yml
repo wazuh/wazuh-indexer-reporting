@@ -136,7 +136,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ "java-kotlin" ]
+        include:
+          - language: java-kotlin
+            build-mode: none
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby', 'swift' ]
         # Use only 'java' to analyze code written in Java, Kotlin or both
         # Use only 'javascript' to analyze code written in JavaScript, TypeScript or both
@@ -156,9 +158,9 @@ jobs:
         uses: actions/cache/restore@v5
         with:
           path: ~/.m2/repository
-          key: m2-sap-with-deps-${{ github.ref_name }}-${{ needs.branches.outputs.common_utils_plugin_ref }}-${{ needs.branches.outputs.security_analytics_plugin_ref }}-${{ needs.get-version.outputs.version }}
+          key: m2-sap-with-deps-${{ github.ref_name }}-${{ needs.branches.outputs.common_utils_plugin_ref }}-${{ needs.branches.outputs.common_utils_sha }}-${{ needs.branches.outputs.security_analytics_plugin_ref }}-${{ needs.branches.outputs.security_analytics_sha }}-${{ needs.get-version.outputs.version }}
           restore-keys: |
-            m2-sap-with-deps-${{ github.ref_name }}-${{ needs.branches.outputs.common_utils_plugin_ref }}-${{ needs.branches.outputs.security_analytics_plugin_ref }}-
+            m2-sap-with-deps-${{ github.ref_name }}-${{ needs.branches.outputs.common_utils_plugin_ref }}-${{ needs.branches.outputs.common_utils_sha }}-${{ needs.branches.outputs.security_analytics_plugin_ref }}-${{ needs.branches.outputs.security_analytics_sha }}-
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
