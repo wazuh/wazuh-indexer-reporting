@@ -59,7 +59,7 @@ jobs:
 
   publish-common-utils:
     runs-on: ubuntu-24.04
-    needs: [branches, get-version]
+    needs: [ branches, get-version ]
     steps:
       - name: Restore Maven Local Cache
         id: cache-common-utils
@@ -85,7 +85,7 @@ jobs:
 
   publish-security-analytics:
     runs-on: ubuntu-24.04
-    needs: [branches, get-version, publish-common-utils]
+    needs: [ branches, get-version, publish-common-utils ]
     steps:
       - name: Restore Maven Local Cache
         id: cache-security-analytics
@@ -124,7 +124,7 @@ jobs:
     #   - https://gh.io/supported-runners-and-hardware-resources
     #   - https://gh.io/using-larger-runners
     # Consider using larger runners for possible analysis time improvements.
-    needs: [branches, get-version, publish-security-analytics]
+    needs: [ branches, get-version, publish-security-analytics ]
     runs-on: ubuntu-24.04
     timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
     permissions:
@@ -136,7 +136,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: ["java-kotlin"]
+        language: [ "java-kotlin" ]
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby', 'swift' ]
         # Use only 'java' to analyze code written in Java, Kotlin or both
         # Use only 'javascript' to analyze code written in JavaScript, TypeScript or both
@@ -151,7 +151,15 @@ jobs:
         with:
           distribution: temurin
           java-version: 25
-        
+
+      - name: Restore Maven Local Cache (security-analytics with deps)
+        uses: actions/cache/restore@v5
+        with:
+          path: ~/.m2/repository
+          key: m2-sap-with-deps-${{ github.ref_name }}-${{ needs.branches.outputs.common_utils_plugin_ref }}-${{ needs.branches.outputs.security_analytics_plugin_ref }}-${{ needs.get-version.outputs.version }}
+          restore-keys: |
+            m2-sap-with-deps-${{ github.ref_name }}-${{ needs.branches.outputs.common_utils_plugin_ref }}-${{ needs.branches.outputs.security_analytics_plugin_ref }}-
+
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
