@@ -85,6 +85,7 @@ internal object ReportInstancesIndex {
                     val response = actionFuture.actionGet(PluginSettings.operationTimeoutMs)
                     if (response.isAcknowledged) {
                         log.info("$LOG_PREFIX:Index $REPORT_INSTANCES_INDEX_NAME creation Acknowledged")
+                        log.info("$LOG_PREFIX:Index $REPORT_INSTANCES_INDEX_NAME creation Acknowledged")
                     } else {
                         error("$LOG_PREFIX:Index $REPORT_INSTANCES_INDEX_NAME creation not Acknowledged")
                     }
