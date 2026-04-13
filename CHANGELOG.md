@@ -29,6 +29,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Fix broken links [(#77)](https://github.com/wazuh/wazuh-indexer-reporting/pull/77)
 - Fix CodeQL workflow [(#76)](https://github.com/wazuh/wazuh-indexer-reporting/pull/76)
 - Fix link-checker workflow [(#121)](https://github.com/wazuh/wazuh-indexer-reporting/pull/121)
+- Fix maven cache in CodeQL workflow [(#142)](https://github.com/wazuh/wazuh-indexer-reporting/pull/142)
 
 ### Security
 
