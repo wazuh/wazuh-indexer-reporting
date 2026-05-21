@@ -34,4 +34,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Security
 
-[Unreleased 5.0.x]: https://github.com/wazuh/wazuh-indexer-reporting/compare/7032eef2cd847b3dc4e805adaca2e6c0a516f05a...main
+[Unreleased 5.0.x]: https://github.com/wazuh/wazuh-indexer-reporting/compare/52180e3e4f78a7ac049d96d0bb06f51ec009638b...main
