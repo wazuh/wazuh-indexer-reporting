@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Add `--set-as-main` flag support to repository bumper [(#139)](https://github.com/wazuh/wazuh-indexer-reporting/pull/139)
 - Add revert logic to bumper workflow [(#159)](https://github.com/wazuh/wazuh-indexer-reporting/pull/159)
 
+
 ### Dependencies
 
 ### Changed
