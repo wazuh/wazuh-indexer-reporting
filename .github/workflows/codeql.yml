@@ -12,12 +12,15 @@
 name: "CodeQL"
 
 on:
+  workflow_dispatch: # For testing
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
   schedule:
-    - cron: "00 8 * * 5"
-  workflow_dispatch:
+    - cron: '0 8 * * 5'
 
 jobs:
   branches:
+    if: ${{ !github.event.pull_request.draft }}
     runs-on: ubuntu-24.04
     outputs:
       common_utils_plugin_ref: ${{ steps.branches.outputs.wazuh_indexer_common_utils_branch }}
