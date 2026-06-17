@@ -148,6 +148,26 @@ internal object ReportDefinitionsIndex {
     }
 
     /**
+     * Count all report definitions in the index.
+     * Returns 0 if the index does not exist yet (first-boot scenario).
+     * @return total number of report definitions
+     */
+    fun countReportDefinitions(): Long {
+        if (!isIndexExists()) {
+            return 0L
+        }
+        val sourceBuilder = SearchSourceBuilder()
+            .timeout(TimeValue(PluginSettings.operationTimeoutMs, TimeUnit.MILLISECONDS))
+            .size(0)
+            .trackTotalHits(true)
+        val searchRequest = SearchRequest()
+            .indices(REPORT_DEFINITIONS_INDEX_NAME)
+            .source(sourceBuilder)
+        val response = client.search(searchRequest).actionGet(PluginSettings.operationTimeoutMs)
+        return response.hits.totalHits?.value ?: 0L
+    }
+
+    /**
      * Query index for report definition for given access details
      * @param tenant the tenant of the user
      * @param access the list of access details to search reports for.

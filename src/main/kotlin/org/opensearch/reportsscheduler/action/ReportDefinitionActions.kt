@@ -25,6 +25,7 @@ import org.opensearch.reportsscheduler.model.UpdateReportDefinitionResponse
 import org.opensearch.reportsscheduler.resources.Utils
 import org.opensearch.reportsscheduler.resources.Utils.shouldUseResourceAuthz
 import org.opensearch.reportsscheduler.security.UserAccessManager
+import org.opensearch.reportsscheduler.settings.PluginSettings
 import org.opensearch.reportsscheduler.util.PluginClient
 import org.opensearch.reportsscheduler.util.logger
 import java.time.Instant
@@ -45,6 +46,18 @@ internal object ReportDefinitionActions {
         // only use backend_role path if resource-sharing is disabled
         if (!shouldUseResourceAuthz(Utils.REPORT_DEFINITION_TYPE)) {
             UserAccessManager.validateUser(user)
+        }
+        val count = try {
+            ReportDefinitionsIndex.countReportDefinitions()
+        } catch (e: Exception) {
+            log.warn("$LOG_PREFIX:Failed to count report definitions for limit check: ${e.message}")
+            -1L
+        }
+        if (count >= 0 && count >= PluginSettings.maxReportDefinitions) {
+            throw OpenSearchStatusException(
+                "This request would exceed the maximum allowed report definitions [${PluginSettings.maxReportDefinitions}].",
+                RestStatus.BAD_REQUEST
+            )
         }
         val currentTime = Instant.now()
         val reportDefinitionDetails = ReportDefinitionDetails(
