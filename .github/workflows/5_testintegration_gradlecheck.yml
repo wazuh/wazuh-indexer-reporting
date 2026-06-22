@@ -17,7 +17,8 @@ concurrency:
 jobs:
   branches:
     if: ${{ !github.event.pull_request.draft }}
-    runs-on: ubuntu-24.04
+    runs-on:
+      - codebuild-github-actions-codebuild-runner-indexer-amd-${{ github.run_id }}-${{ github.run_attempt }}
     outputs:
       common_utils_ref: ${{ steps.resolve.outputs.wazuh_indexer_common_utils_branch }}
     steps:
@@ -34,7 +35,8 @@ jobs:
           echo "Common Utils branch: ${{ steps.resolve.outputs.wazuh_indexer_common_utils_branch }}"
 
   get-version:
-    runs-on: ubuntu-24.04
+    runs-on:
+      - codebuild-github-actions-codebuild-runner-indexer-amd-${{ github.run_id }}-${{ github.run_attempt }}
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
@@ -44,7 +46,8 @@ jobs:
         run: echo "version=$(jq -r .version<VERSION.json)" >> "$GITHUB_OUTPUT"
 
   publish-common-utils:
-    runs-on: ubuntu-24.04
+    runs-on:
+      - codebuild-github-actions-codebuild-runner-indexer-amd-${{ github.run_id }}-${{ github.run_attempt }}
     needs: [branches, get-version]
     steps:
       - name: Publish common-utils to Maven Local
@@ -60,7 +63,8 @@ jobs:
           key: ${{ github.run_id }}-common-utils
 
   call-test-workflow:
-    runs-on: ubuntu-24.04
+    runs-on:
+      - codebuild-github-actions-codebuild-runner-indexer-amd-${{ github.run_id }}-${{ github.run_attempt }}
     needs: [publish-common-utils]
     steps:
       - uses: actions/checkout@v6
@@ -76,4 +80,13 @@ jobs:
           key: ${{ github.run_id }}-common-utils
 
       - name: Run Gradle check
-        run: ./gradlew check
+        # The self-hosted runner executes as root, but OpenSearch test clusters
+        # (launched by integTest during `check`) refuse to run as root. Run as a
+        # dedicated non-root user instead.
+        run: |
+          id -u builder &>/dev/null || useradd -m builder
+          # Hand the build user the workspace and the restored Maven local cache.
+          cp -a "$HOME/.m2" /home/builder/.m2 2>/dev/null || true
+          chown -R builder:builder "$GITHUB_WORKSPACE" /home/builder
+          runuser -u builder -- env "JAVA_HOME=$JAVA_HOME" "PATH=$PATH" "GRADLE_USER_HOME=/home/builder/.gradle" \
+            ./gradlew check
