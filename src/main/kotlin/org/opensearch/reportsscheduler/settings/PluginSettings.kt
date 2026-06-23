@@ -58,7 +58,7 @@ internal object PluginSettings {
      * Maximum number of report definitions allowed. Requests exceeding this limit are rejected
      * with a 400 error.
      */
-    private const val MAX_REPORT_DEFINITIONS_KEY = "$GENERAL_KEY_PREFIX.maxReportDefinitions"
+    private const val MAX_REPORT_DEFINITIONS_KEY = "plugins.reports.general.max_report_definitions"
 
     /**
      * Default operation timeout for network operations.
@@ -83,7 +83,7 @@ internal object PluginSettings {
     /**
      * Default maximum number of report definitions.
      */
-    private const val DEFAULT_MAX_REPORT_DEFINITIONS_VALUE = 100
+    private const val DEFAULT_MAX_REPORT_DEFINITIONS_VALUE = 50
 
     /**
      * Minimum allowed value for the max report definitions setting.
