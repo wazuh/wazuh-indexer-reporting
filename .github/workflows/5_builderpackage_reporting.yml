@@ -81,7 +81,7 @@ jobs:
           revision: ${{ inputs.revision }}
           reference: ${{ needs.branches.outputs.common_utils_ref }}
       - name: Cache Maven Local
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         with:
           path: ~/.m2/repository
           key: maven-common-utils-${{ github.ref_name }}
@@ -103,7 +103,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
 
       - name: Restore Maven Local cache
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: ~/.m2/repository
           key: maven-common-utils-${{ github.ref_name }}

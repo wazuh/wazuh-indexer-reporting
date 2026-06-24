@@ -57,7 +57,7 @@ jobs:
           revision: 0
           reference: ${{ needs.branches.outputs.common_utils_ref }}
       - name: Cache Maven Local
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         with:
           path: ~/.m2/repository
           key: ${{ github.run_id }}-common-utils
@@ -74,7 +74,7 @@ jobs:
           java-version: 25
 
       - name: Restore Maven Local cache
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: ~/.m2/repository
           key: ${{ github.run_id }}-common-utils
