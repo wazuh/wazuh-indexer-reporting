@@ -81,9 +81,15 @@ internal object PluginSettings {
     private const val MINIMUM_ITEMS_QUERY_COUNT = 10
 
     /**
-     * Default maximum number of report definitions.
+     * Maximum allowed value for the max report definitions setting.
      */
-    private const val DEFAULT_MAX_REPORT_DEFINITIONS_VALUE = 50
+    private const val MAXIMUM_MAX_REPORT_DEFINITIONS = 50
+
+    /**
+     * Default maximum number of report definitions. Equals the maximum to prevent
+     * accidental over-provisioning by default.
+     */
+    private const val DEFAULT_MAX_REPORT_DEFINITIONS_VALUE = MAXIMUM_MAX_REPORT_DEFINITIONS
 
     /**
      * Minimum allowed value for the max report definitions setting.
@@ -158,6 +164,7 @@ internal object PluginSettings {
         MAX_REPORT_DEFINITIONS_KEY,
         defaultSettings[MAX_REPORT_DEFINITIONS_KEY]!!.toInt(),
         MINIMUM_MAX_REPORT_DEFINITIONS,
+        MAXIMUM_MAX_REPORT_DEFINITIONS,
         NodeScope,
         Dynamic
     )
