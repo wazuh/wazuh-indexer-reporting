@@ -55,6 +55,12 @@ internal object PluginSettings {
     private const val FILTER_BY_BACKEND_ROLES_KEY = "plugins.alerting.filter_by_backend_roles"
 
     /**
+     * Maximum number of report definitions allowed. Requests exceeding this limit are rejected
+     * with a 400 error.
+     */
+    private const val MAX_REPORT_DEFINITIONS_KEY = "plugins.reports.max_report_definitions"
+
+    /**
      * Default operation timeout for network operations.
      */
     private const val DEFAULT_OPERATION_TIMEOUT_MS = 60000L
@@ -74,6 +80,22 @@ internal object PluginSettings {
      */
     private const val MINIMUM_ITEMS_QUERY_COUNT = 10
 
+    /**
+     * Maximum allowed value for the max report definitions setting.
+     */
+    private const val MAXIMUM_MAX_REPORT_DEFINITIONS = 50
+
+    /**
+     * Default maximum number of report definitions. Equals the maximum to prevent
+     * accidental over-provisioning by default.
+     */
+    private const val DEFAULT_MAX_REPORT_DEFINITIONS_VALUE = MAXIMUM_MAX_REPORT_DEFINITIONS
+
+    /**
+     * Minimum allowed value for the max report definitions setting.
+     */
+    private const val MINIMUM_MAX_REPORT_DEFINITIONS = 0
+
     private const val DECIMAL_RADIX: Int = 10
 
     /**
@@ -87,6 +109,12 @@ internal object PluginSettings {
      */
     @Volatile
     var defaultItemsQueryCount: Int
+
+    /**
+     * Maximum number of report definitions allowed.
+     */
+    @Volatile
+    var maxReportDefinitions: Int
 
     private val log = LogManager.getLogger(javaClass)
     private val defaultSettings: Map<String, String>
@@ -106,10 +134,13 @@ internal object PluginSettings {
         operationTimeoutMs = (settings?.get(OPERATION_TIMEOUT_MS_KEY)?.toLong()) ?: DEFAULT_OPERATION_TIMEOUT_MS
         defaultItemsQueryCount = (settings?.get(DEFAULT_ITEMS_QUERY_COUNT_KEY)?.toInt())
             ?: DEFAULT_ITEMS_QUERY_COUNT_VALUE
+        maxReportDefinitions = (settings?.get(MAX_REPORT_DEFINITIONS_KEY)?.toInt())
+            ?: DEFAULT_MAX_REPORT_DEFINITIONS_VALUE
 
         defaultSettings = mapOf(
             OPERATION_TIMEOUT_MS_KEY to operationTimeoutMs.toString(DECIMAL_RADIX),
-            DEFAULT_ITEMS_QUERY_COUNT_KEY to defaultItemsQueryCount.toString(DECIMAL_RADIX)
+            DEFAULT_ITEMS_QUERY_COUNT_KEY to defaultItemsQueryCount.toString(DECIMAL_RADIX),
+            MAX_REPORT_DEFINITIONS_KEY to maxReportDefinitions.toString(DECIMAL_RADIX)
         )
     }
 
@@ -125,6 +156,15 @@ internal object PluginSettings {
         DEFAULT_ITEMS_QUERY_COUNT_KEY,
         defaultSettings[DEFAULT_ITEMS_QUERY_COUNT_KEY]!!.toInt(),
         MINIMUM_ITEMS_QUERY_COUNT,
+        NodeScope,
+        Dynamic
+    )
+
+    private val MAX_REPORT_DEFINITIONS: Setting<Int> = Setting.intSetting(
+        MAX_REPORT_DEFINITIONS_KEY,
+        defaultSettings[MAX_REPORT_DEFINITIONS_KEY]!!.toInt(),
+        MINIMUM_MAX_REPORT_DEFINITIONS,
+        MAXIMUM_MAX_REPORT_DEFINITIONS,
         NodeScope,
         Dynamic
     )
@@ -163,7 +203,8 @@ internal object PluginSettings {
     fun getAllSettings(): List<Setting<*>> {
         return listOf(
             OPERATION_TIMEOUT_MS,
-            DEFAULT_ITEMS_QUERY_COUNT
+            DEFAULT_ITEMS_QUERY_COUNT,
+            MAX_REPORT_DEFINITIONS
         )
     }
 
@@ -174,6 +215,7 @@ internal object PluginSettings {
     private fun updateSettingValuesFromLocal(clusterService: ClusterService) {
         operationTimeoutMs = OPERATION_TIMEOUT_MS.get(clusterService.settings)
         defaultItemsQueryCount = DEFAULT_ITEMS_QUERY_COUNT.get(clusterService.settings)
+        maxReportDefinitions = MAX_REPORT_DEFINITIONS.get(clusterService.settings)
     }
 
     /**
@@ -190,6 +232,11 @@ internal object PluginSettings {
         if (clusterDefaultItemsQueryCount != null) {
             log.debug("$LOG_PREFIX:$DEFAULT_ITEMS_QUERY_COUNT_KEY -autoUpdatedTo-> $clusterDefaultItemsQueryCount")
             defaultItemsQueryCount = clusterDefaultItemsQueryCount
+        }
+        val clusterMaxReportDefinitions = clusterService.clusterSettings.get(MAX_REPORT_DEFINITIONS)
+        if (clusterMaxReportDefinitions != null) {
+            log.debug("$LOG_PREFIX:$MAX_REPORT_DEFINITIONS_KEY -autoUpdatedTo-> $clusterMaxReportDefinitions")
+            maxReportDefinitions = clusterMaxReportDefinitions
         }
     }
 
@@ -211,6 +258,10 @@ internal object PluginSettings {
         clusterService.clusterSettings.addSettingsUpdateConsumer(DEFAULT_ITEMS_QUERY_COUNT) {
             defaultItemsQueryCount = it
             log.info("$LOG_PREFIX:$DEFAULT_ITEMS_QUERY_COUNT_KEY -updatedTo-> $it")
+        }
+        clusterService.clusterSettings.addSettingsUpdateConsumer(MAX_REPORT_DEFINITIONS) {
+            maxReportDefinitions = it
+            log.info("$LOG_PREFIX:$MAX_REPORT_DEFINITIONS_KEY -updatedTo-> $it")
         }
     }
 }

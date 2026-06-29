@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Implement delivery of notifications on reports creation [(#67)](https://github.com/wazuh/wazuh-indexer-reporting/pull/67)
 - Add `--set-as-main` flag support to repository bumper [(#139)](https://github.com/wazuh/wazuh-indexer-reporting/pull/139)
 - Add revert logic to bumper workflow [(#159)](https://github.com/wazuh/wazuh-indexer-reporting/pull/159)
+- Add limit for report definitions [(#206)](https://github.com/wazuh/wazuh-indexer-reporting/pull/206)
 
 ### Dependencies
 
