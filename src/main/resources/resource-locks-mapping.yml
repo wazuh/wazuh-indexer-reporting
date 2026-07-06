@@ -1,0 +1,12 @@
+---
+##
+ # Copyright OpenSearch Contributors
+ # SPDX-License-Identifier: Apache-2.0
+##
+
+# Schema file for the resource-locks index
+# "dynamic" is set to "strict" so this index only ever holds the fields the lock service uses.
+dynamic: strict
+properties:
+  acquired_at:
+    type: long

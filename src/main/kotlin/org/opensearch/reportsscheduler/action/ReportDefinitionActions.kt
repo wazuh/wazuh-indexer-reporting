@@ -10,6 +10,7 @@ import org.opensearch.commons.authuser.User
 import org.opensearch.core.rest.RestStatus
 import org.opensearch.reportsscheduler.ReportsSchedulerPlugin.Companion.LOG_PREFIX
 import org.opensearch.reportsscheduler.index.ReportDefinitionsIndex
+import org.opensearch.reportsscheduler.index.ResourceLockService
 import org.opensearch.reportsscheduler.metrics.Metrics
 import org.opensearch.reportsscheduler.model.CreateReportDefinitionRequest
 import org.opensearch.reportsscheduler.model.CreateReportDefinitionResponse
@@ -28,6 +29,7 @@ import org.opensearch.reportsscheduler.security.UserAccessManager
 import org.opensearch.reportsscheduler.settings.PluginSettings
 import org.opensearch.reportsscheduler.util.PluginClient
 import org.opensearch.reportsscheduler.util.logger
+import java.io.IOException
 import java.time.Instant
 
 /**
@@ -35,6 +37,8 @@ import java.time.Instant
  */
 internal object ReportDefinitionActions {
     private val log by logger(ReportDefinitionActions::class.java)
+
+    private const val MAX_REPORT_DEFINITIONS_LOCK_ID = "report-definition-creation"
 
     /**
      * Create new ReportDefinition
@@ -47,33 +51,49 @@ internal object ReportDefinitionActions {
         if (!shouldUseResourceAuthz(Utils.REPORT_DEFINITION_TYPE)) {
             UserAccessManager.validateUser(user)
         }
-        val count = try {
-            ReportDefinitionsIndex.countReportDefinitions()
-        } catch (e: Exception) {
-            log.warn("$LOG_PREFIX:Failed to count report definitions for limit check: ${e.message}")
-            -1L
-        }
-        if (count >= 0 && count >= PluginSettings.maxReportDefinitions) {
+
+        // Serialize the limit-check-then-create sequence so concurrent requests cannot all
+        // observe a stale count and overshoot the configured max.
+        val lockId = try {
+            ResourceLockService.acquire(MAX_REPORT_DEFINITIONS_LOCK_ID)
+        } catch (e: IOException) {
+            log.warn("$LOG_PREFIX:${e.message}")
             throw OpenSearchStatusException(
-                "This request would exceed the maximum allowed report definitions [${PluginSettings.maxReportDefinitions}].",
-                RestStatus.BAD_REQUEST
+                "Too many concurrent report definition creation requests, please retry.",
+                RestStatus.TOO_MANY_REQUESTS
             )
         }
-        val currentTime = Instant.now()
-        val reportDefinitionDetails = ReportDefinitionDetails(
-            "ignore",
-            currentTime,
-            currentTime,
-            UserAccessManager.getUserTenant(user),
-            UserAccessManager.getAllAccessInfo(user),
-            request.reportDefinition
-        )
-        val docId = ReportDefinitionsIndex.createReportDefinition(reportDefinitionDetails)
-        docId ?: throw OpenSearchStatusException(
-            "Report Definition Creation failed",
-            RestStatus.INTERNAL_SERVER_ERROR
-        )
-        return CreateReportDefinitionResponse(docId)
+        try {
+            val count = try {
+                ReportDefinitionsIndex.countReportDefinitions()
+            } catch (e: Exception) {
+                log.warn("$LOG_PREFIX:Failed to count report definitions for limit check: ${e.message}")
+                -1L
+            }
+            if (count >= 0 && count >= PluginSettings.maxReportDefinitions) {
+                throw OpenSearchStatusException(
+                    "This request would exceed the maximum allowed report definitions [${PluginSettings.maxReportDefinitions}].",
+                    RestStatus.BAD_REQUEST
+                )
+            }
+            val currentTime = Instant.now()
+            val reportDefinitionDetails = ReportDefinitionDetails(
+                "ignore",
+                currentTime,
+                currentTime,
+                UserAccessManager.getUserTenant(user),
+                UserAccessManager.getAllAccessInfo(user),
+                request.reportDefinition
+            )
+            val docId = ReportDefinitionsIndex.createReportDefinition(reportDefinitionDetails)
+            docId ?: throw OpenSearchStatusException(
+                "Report Definition Creation failed",
+                RestStatus.INTERNAL_SERVER_ERROR
+            )
+            return CreateReportDefinitionResponse(docId)
+        } finally {
+            ResourceLockService.release(lockId)
+        }
     }
 
     /**
