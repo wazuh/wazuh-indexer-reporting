@@ -12,6 +12,7 @@ import org.opensearch.action.delete.DeleteRequest
 import org.opensearch.action.get.GetRequest
 import org.opensearch.action.index.IndexRequest
 import org.opensearch.action.search.SearchRequest
+import org.opensearch.action.support.WriteRequest
 import org.opensearch.action.update.UpdateRequest
 import org.opensearch.cluster.service.ClusterService
 import org.opensearch.common.unit.TimeValue
@@ -112,6 +113,9 @@ internal object ReportDefinitionsIndex {
         val indexRequest = IndexRequest(REPORT_DEFINITIONS_INDEX_NAME)
             .source(reportDefinitionDetails.toXContent())
             .create(true)
+            // Ensures countReportDefinitions() sees this doc on the very next call, so the
+            // ResourceLockService-guarded limit check isn't fooled by refresh-interval lag.
+            .setRefreshPolicy(WriteRequest.RefreshPolicy.WAIT_UNTIL)
         val actionFuture = client.index(indexRequest)
         val response = actionFuture.actionGet(PluginSettings.operationTimeoutMs)
         return if (response.result != DocWriteResponse.Result.CREATED) {
@@ -145,6 +149,26 @@ internal object ReportDefinitionsIndex {
             parser.nextToken()
             ReportDefinitionDetails.parse(parser, id)
         }
+    }
+
+    /**
+     * Count all report definitions in the index.
+     * Returns 0 if the index does not exist yet (first-boot scenario).
+     * @return total number of report definitions
+     */
+    fun countReportDefinitions(): Long {
+        if (!isIndexExists()) {
+            return 0L
+        }
+        val sourceBuilder = SearchSourceBuilder()
+            .timeout(TimeValue(PluginSettings.operationTimeoutMs, TimeUnit.MILLISECONDS))
+            .size(0)
+            .trackTotalHits(true)
+        val searchRequest = SearchRequest()
+            .indices(REPORT_DEFINITIONS_INDEX_NAME)
+            .source(sourceBuilder)
+        val response = client.search(searchRequest).actionGet(PluginSettings.operationTimeoutMs)
+        return response.hits.totalHits?.value ?: 0L
     }
 
     /**

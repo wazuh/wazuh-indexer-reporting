@@ -1,0 +1,12 @@
+---
+##
+ # Copyright OpenSearch Contributors
+ # SPDX-License-Identifier: Apache-2.0
+##
+
+# Settings file for the resource-locks index
+index:
+  number_of_shards: "1"
+  number_of_replicas: "0"
+  hidden: true
+  refresh_interval: "-1" # Lock acquire/release explicitly request an immediate refresh per write.

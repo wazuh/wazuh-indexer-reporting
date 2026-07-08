@@ -42,6 +42,7 @@ import org.opensearch.reportsscheduler.index.ReportDefinitionsIndex
 import org.opensearch.reportsscheduler.index.ReportDefinitionsIndex.REPORT_DEFINITIONS_INDEX_NAME
 import org.opensearch.reportsscheduler.index.ReportInstancesIndex
 import org.opensearch.reportsscheduler.index.ReportInstancesIndex.REPORT_INSTANCES_INDEX_NAME
+import org.opensearch.reportsscheduler.index.ResourceLockService
 import org.opensearch.reportsscheduler.resthandler.OnDemandReportRestHandler
 import org.opensearch.reportsscheduler.resthandler.ReportDefinitionListRestHandler
 import org.opensearch.reportsscheduler.resthandler.ReportDefinitionRestHandler
@@ -87,7 +88,11 @@ class ReportsSchedulerPlugin : Plugin(), ActionPlugin, SystemIndexPlugin, JobSch
     override fun getSystemIndexDescriptors(settings: Settings): Collection<SystemIndexDescriptor> {
         return listOf(
             SystemIndexDescriptor(REPORT_DEFINITIONS_INDEX_NAME, "Reports Scheduler Plugin Definitions index"),
-            SystemIndexDescriptor(REPORT_INSTANCES_INDEX_NAME, "Reports Scheduler Plugin Instances index")
+            SystemIndexDescriptor(REPORT_INSTANCES_INDEX_NAME, "Reports Scheduler Plugin Instances index"),
+            SystemIndexDescriptor(
+                ResourceLockService.LOCKS_INDEX_NAME,
+                "System index for serializing the report-definition-creation limit check."
+            )
         )
     }
 
@@ -110,6 +115,7 @@ class ReportsSchedulerPlugin : Plugin(), ActionPlugin, SystemIndexPlugin, JobSch
         PluginSettings.addSettingsUpdateConsumer(clusterService)
         ReportDefinitionsIndex.initialize(client, clusterService)
         ReportInstancesIndex.initialize(client, clusterService)
+        ResourceLockService.initialize(client, clusterService)
         val pluginClientInstance = PluginClient(client)
         this.pluginClient = pluginClientInstance
         return listOf(pluginClientInstance)
