@@ -1,9 +1,5 @@
-# CHANGELOG
-All notable changes to this project are documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). See the [CONTRIBUTING guide](./CONTRIBUTING.md#Changelog) for instructions on how to add changelog entries.
-
 ## [v5.0.0]
+
 ### Added
 - New quality check workflows [(#30)](https://github.com/wazuh/wazuh-indexer-reporting/pull/30)
 - Add repository bumper [(#43)](https://github.com/wazuh/wazuh-indexer-plugins/pull/43)
@@ -37,5 +33,3 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Prior versions
 - []()
-
-[Unreleased 5.0.x]: https://github.com/wazuh/wazuh-indexer-reporting/compare/52180e3e4f78a7ac049d96d0bb06f51ec009638b...5.0.0
