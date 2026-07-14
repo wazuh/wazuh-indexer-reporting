@@ -5,33 +5,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [v5.0.0]
 ### Added
-- New quality check workflows [(#30)](https://github.com/wazuh/wazuh-indexer-reporting/pull/30)
-- Add repository bumper [(#43)](https://github.com/wazuh/wazuh-indexer-plugins/pull/43)
-- Add scripts to check the opensearch and product version [(#59)](https://github.com/wazuh/wazuh-indexer-reporting/pull/59)
-- Add documentation to bring up an SMTP server for development [(#60)](https://github.com/wazuh/wazuh-indexer-plugins/pull/60)
-- Add support for multiple notification channels [(#66)](https://github.com/wazuh/wazuh-indexer-reporting/pull/66)
-- Implement delivery of notifications on reports creation [(#67)](https://github.com/wazuh/wazuh-indexer-reporting/pull/67)
-- Add `--set-as-main` flag support to repository bumper [(#139)](https://github.com/wazuh/wazuh-indexer-reporting/pull/139)
-- Add revert logic to bumper workflow [(#159)](https://github.com/wazuh/wazuh-indexer-reporting/pull/159)
-- Add limit for report definitions [(#206)](https://github.com/wazuh/wazuh-indexer-reporting/pull/206)
+- New quality check workflows [(#737)](https://github.com/wazuh/wazuh-indexer/issues/737)
+- Add repository bumper [(#43)](https://github.com/wazuh/wazuh-indexer-plugins/issues/43)
+- Add scripts to check the opensearch and product version [(#999)](https://github.com/wazuh/wazuh-indexer/issues/999)
+- Add documentation to bring up an SMTP server for development [(#48)](https://github.com/wazuh/wazuh-indexer-plugins/issues/48)
+- Add support for multiple notification channels [(#65)](https://github.com/wazuh/wazuh-indexer-reporting/issues/65)
+- Implement delivery of notifications on reports creation [(#62)](https://github.com/wazuh/wazuh-indexer-reporting/issues/62)
+- Add `--set-as-main` flag support to repository bumper [(#136)](https://github.com/wazuh/wazuh-indexer-reporting/issues/136)
+- Add revert logic to bumper workflow [(#153)](https://github.com/wazuh/wazuh-indexer-reporting/issues/153)
+- Add limit for report definitions [(#1276)](https://github.com/wazuh/wazuh-indexer-plugins/issues/1276)
 
 ### Dependencies
 
 ### Changed
-- Replace third-party Action to check commiter's email with our forked version [(#71)](https://github.com/wazuh/wazuh-indexer-reporting/pull/71)
-- Add version to the GH Workflow names [(#73)](https://github.com/wazuh/wazuh-indexer-plugins/pull/73)
-- Update GitHub Actions versions in main branch [(#78)](https://github.com/wazuh/wazuh-indexer-reporting/pull/78)
-- Check GitHub actions with dependabot [(#86)](https://github.com/wazuh/wazuh-indexer-plugins/pull/86)
+- Replace third-party Action to check commiter's email with our forked version [(#70)](https://github.com/wazuh/wazuh-indexer-reporting/issues/70)
+- Add version to the GH Workflow names [(#73)](https://github.com/wazuh/wazuh-indexer-plugins/issues/73)
+- Update GitHub Actions versions in main branch [(#1129)](https://github.com/wazuh/wazuh-indexer/issues/1129)
+- Check GitHub actions with dependabot [(#86)](https://github.com/wazuh/wazuh-indexer-plugins/issues/86)
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
-- Fix broken links [(#77)](https://github.com/wazuh/wazuh-indexer-reporting/pull/77)
-- Fix CodeQL workflow [(#76)](https://github.com/wazuh/wazuh-indexer-reporting/pull/76)
-- Fix link-checker workflow [(#121)](https://github.com/wazuh/wazuh-indexer-reporting/pull/121)
-- Fix maven cache in CodeQL workflow [(#142)](https://github.com/wazuh/wazuh-indexer-reporting/pull/142)
+- Fix broken links [(#75)](https://github.com/wazuh/wazuh-indexer-reporting/issues/75)
+- Fix CodeQL workflow [(#74)](https://github.com/wazuh/wazuh-indexer-reporting/issues/74)
+- Fix link-checker workflow [(#867)](https://github.com/wazuh/wazuh-indexer-plugins/issues/867)
+- Fix maven cache in CodeQL workflow [(#141)](https://github.com/wazuh/wazuh-indexer-reporting/issues/141)
 
 ### Security
 
