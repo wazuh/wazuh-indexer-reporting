@@ -1,40 +1,29 @@
-# CHANGELOG
-All notable changes to this project are documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). See the [CONTRIBUTING guide](./CONTRIBUTING.md#Changelog) for instructions on how to add changelog entries.
-
 ## [v5.0.0]
-### Added
-- New quality check workflows [(#30)](https://github.com/wazuh/wazuh-indexer-reporting/pull/30)
-- Add repository bumper [(#43)](https://github.com/wazuh/wazuh-indexer-plugins/pull/43)
-- Add scripts to check the opensearch and product version [(#59)](https://github.com/wazuh/wazuh-indexer-reporting/pull/59)
-- Add documentation to bring up an SMTP server for development [(#60)](https://github.com/wazuh/wazuh-indexer-plugins/pull/60)
-- Add support for multiple notification channels [(#66)](https://github.com/wazuh/wazuh-indexer-reporting/pull/66)
-- Implement delivery of notifications on reports creation [(#67)](https://github.com/wazuh/wazuh-indexer-reporting/pull/67)
-- Add `--set-as-main` flag support to repository bumper [(#139)](https://github.com/wazuh/wazuh-indexer-reporting/pull/139)
-- Add revert logic to bumper workflow [(#159)](https://github.com/wazuh/wazuh-indexer-reporting/pull/159)
 
-### Dependencies
+### Added
+- Quality check workflows [(#737)](https://github.com/wazuh/wazuh-indexer/issues/737)
+- Propagate repository bumper functionality from 4.13.0 through 6.0.0 [(#42)](https://github.com/wazuh/wazuh-indexer-reporting/issues/42)
+- Reporting plugin in Wazuh Indexer by default [(#999)](https://github.com/wazuh/wazuh-indexer/issues/999)
+- Add generated states-inventory-processes stateful index template to the wazuh-setup plugin [(#48)](https://github.com/wazuh/wazuh-indexer-plugins/issues/48)
+- Code cleanup [(#65)](https://github.com/wazuh/wazuh-indexer-reporting/issues/65)
+- Email notifications for scheduled and on demand reports [(#62)](https://github.com/wazuh/wazuh-indexer-reporting/issues/62)
+- Add `--set-as-main` flag support to repository bumper — `wazuh-indexer-reporting` [(#136)](https://github.com/wazuh/wazuh-indexer-reporting/issues/136)
+- Support Revert bump functionality in wazuh-indexer-reporting [(#153)](https://github.com/wazuh/wazuh-indexer-reporting/issues/153)
+- Configurable resource creation limits [(#1276)](https://github.com/wazuh/wazuh-indexer-plugins/issues/1276)
 
 ### Changed
-- Replace third-party Action to check commiter's email with our forked version [(#71)](https://github.com/wazuh/wazuh-indexer-reporting/pull/71)
-- Add version to the GH Workflow names [(#73)](https://github.com/wazuh/wazuh-indexer-plugins/pull/73)
-- Update GitHub Actions versions in main branch [(#78)](https://github.com/wazuh/wazuh-indexer-reporting/pull/78)
-- Check GitHub actions with dependabot [(#86)](https://github.com/wazuh/wazuh-indexer-plugins/pull/86)
-
-### Deprecated
+- [BUG] Email checker failing during migration [(#70)](https://github.com/wazuh/wazuh-indexer-reporting/issues/70)
+- Implicit versioning in workflows names [(#1122)](https://github.com/wazuh/wazuh-indexer/issues/1122)
+- GitHub Actions update [(#1129)](https://github.com/wazuh/wazuh-indexer/issues/1129)
+- Enhance maintenance workflows [(#1191)](https://github.com/wazuh/wazuh-indexer/issues/1191)
 
 ### Removed
 
 ### Fixed
-- Fix broken links [(#77)](https://github.com/wazuh/wazuh-indexer-reporting/pull/77)
-- Fix CodeQL workflow [(#76)](https://github.com/wazuh/wazuh-indexer-reporting/pull/76)
-- Fix link-checker workflow [(#121)](https://github.com/wazuh/wazuh-indexer-reporting/pull/121)
-- Fix maven cache in CodeQL workflow [(#142)](https://github.com/wazuh/wazuh-indexer-reporting/pull/142)
-
-### Security
+- [BUG] Broken links reported by the GH Workflow [(#75)](https://github.com/wazuh/wazuh-indexer-reporting/issues/75)
+- [BUG] Broken CodeQL workflow [(#74)](https://github.com/wazuh/wazuh-indexer-reporting/issues/74)
+- `linkchecker` failures [(#867)](https://github.com/wazuh/wazuh-indexer-plugins/issues/867)
+- CodeQL failures [(#141)](https://github.com/wazuh/wazuh-indexer-reporting/issues/141)
 
 ## Prior versions
 - []()
-
-[Unreleased 5.0.x]: https://github.com/wazuh/wazuh-indexer-reporting/compare/52180e3e4f78a7ac049d96d0bb06f51ec009638b...main
