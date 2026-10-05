@@ -1,12 +1,9 @@
 ## [v5.0.0]
 
 ### Added
-- Add the Reporting plugin to the Wazuh Indexer packages [(#999)](https://github.com/wazuh/wazuh-indexer/issues/999)
+- Initialize `wazuh-indexer-reporting` repository [(#1)](https://github.com/wazuh/wazuh-indexer-reporting/issues/1) [(#999)](https://github.com/wazuh/wazuh-indexer/issues/999)
 - Add email notifications for scheduled and on-demand reports [(#62)](https://github.com/wazuh/wazuh-indexer-reporting/issues/62)
 - Add a setting to limit the number of report definitions [(#1276)](https://github.com/wazuh/wazuh-indexer-plugins/issues/1276) [(#1420)](https://github.com/wazuh/wazuh-indexer-plugins/issues/1420)
-
-- Initialize `wazuh-indexer-reporting` repository [(#1)](https://github.com/wazuh/wazuh-indexer-reporting/issues/1)
-
 - (operational) Add the repository bumper [(#42)](https://github.com/wazuh/wazuh-indexer-reporting/issues/42) [(#136)](https://github.com/wazuh/wazuh-indexer-reporting/issues/136) [(#153)](https://github.com/wazuh/wazuh-indexer-reporting/issues/153)
 - (operational) Add the code quality check workflows [(#737)](https://github.com/wazuh/wazuh-indexer/issues/737)
 
