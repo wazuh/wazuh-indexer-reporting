@@ -1,29 +1,23 @@
 ## [v5.0.0]
 
 ### Added
-- Quality check workflows [(#737)](https://github.com/wazuh/wazuh-indexer/issues/737)
-- Propagate repository bumper functionality from 4.13.0 through 6.0.0 [(#42)](https://github.com/wazuh/wazuh-indexer-reporting/issues/42)
-- Reporting plugin in Wazuh Indexer by default [(#999)](https://github.com/wazuh/wazuh-indexer/issues/999)
-- Add generated states-inventory-processes stateful index template to the wazuh-setup plugin [(#48)](https://github.com/wazuh/wazuh-indexer-plugins/issues/48)
-- Code cleanup [(#65)](https://github.com/wazuh/wazuh-indexer-reporting/issues/65)
-- Email notifications for scheduled and on demand reports [(#62)](https://github.com/wazuh/wazuh-indexer-reporting/issues/62)
-- Add `--set-as-main` flag support to repository bumper — `wazuh-indexer-reporting` [(#136)](https://github.com/wazuh/wazuh-indexer-reporting/issues/136)
-- Support Revert bump functionality in wazuh-indexer-reporting [(#153)](https://github.com/wazuh/wazuh-indexer-reporting/issues/153)
-- Configurable resource creation limits [(#1276)](https://github.com/wazuh/wazuh-indexer-plugins/issues/1276)
+- Initialize `wazuh-indexer-reporting` repository [(#1)](https://github.com/wazuh/wazuh-indexer-reporting/issues/1) [(#999)](https://github.com/wazuh/wazuh-indexer/issues/999)
+- Add email notifications for scheduled and on-demand reports [(#62)](https://github.com/wazuh/wazuh-indexer-reporting/issues/62)
+- Add a setting to limit the number of report definitions [(#1276)](https://github.com/wazuh/wazuh-indexer-plugins/issues/1276) [(#1420)](https://github.com/wazuh/wazuh-indexer-plugins/issues/1420)
+- (operational) Add the repository bumper [(#42)](https://github.com/wazuh/wazuh-indexer-reporting/issues/42) [(#136)](https://github.com/wazuh/wazuh-indexer-reporting/issues/136) [(#153)](https://github.com/wazuh/wazuh-indexer-reporting/issues/153)
+- (operational) Add the code quality check workflows [(#737)](https://github.com/wazuh/wazuh-indexer/issues/737)
 
 ### Changed
-- [BUG] Email checker failing during migration [(#70)](https://github.com/wazuh/wazuh-indexer-reporting/issues/70)
-- Implicit versioning in workflows names [(#1122)](https://github.com/wazuh/wazuh-indexer/issues/1122)
-- GitHub Actions update [(#1129)](https://github.com/wazuh/wazuh-indexer/issues/1129)
-- Enhance maintenance workflows [(#1191)](https://github.com/wazuh/wazuh-indexer/issues/1191)
+- (operational) Update the maintenance workflows [(#1122)](https://github.com/wazuh/wazuh-indexer/issues/1122) [(#1129)](https://github.com/wazuh/wazuh-indexer/issues/1129) [(#1191)](https://github.com/wazuh/wazuh-indexer/issues/1191)
+- (operational) Resolve the build version from `VERSION.json` [(#1595)](https://github.com/wazuh/wazuh-indexer-plugins/issues/1595)
 
 ### Removed
+- (operational) Remove the proof-of-concept code for query results in email notifications [(#65)](https://github.com/wazuh/wazuh-indexer-reporting/issues/65)
 
 ### Fixed
-- [BUG] Broken links reported by the GH Workflow [(#75)](https://github.com/wazuh/wazuh-indexer-reporting/issues/75)
-- [BUG] Broken CodeQL workflow [(#74)](https://github.com/wazuh/wazuh-indexer-reporting/issues/74)
-- `linkchecker` failures [(#867)](https://github.com/wazuh/wazuh-indexer-plugins/issues/867)
-- CodeQL failures [(#141)](https://github.com/wazuh/wazuh-indexer-reporting/issues/141)
+- (operational) Fix the CodeQL workflow [(#74)](https://github.com/wazuh/wazuh-indexer-reporting/issues/74) [(#141)](https://github.com/wazuh/wazuh-indexer-reporting/issues/141)
+- (operational) Fix the link checker workflow [(#75)](https://github.com/wazuh/wazuh-indexer-reporting/issues/75) [(#867)](https://github.com/wazuh/wazuh-indexer-plugins/issues/867)
+- (operational) Fix the commit email checker workflow [(#70)](https://github.com/wazuh/wazuh-indexer-reporting/issues/70)
 
 ## Prior versions
 - []()
